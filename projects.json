@@ -9,6 +9,42 @@
     "coverClass": "palette-cover"
   },
   {
+  "title": "Word Memory Game",
+  "category": "game",
+  "description": "A memory-based game where players recall and type words that increase in difficulty as levels progress.",
+  "tech": ["HTML", "CSS", "JS"],
+  "link": "./projects/word-memory-game/index.html",
+  "icon": "ri-brain-line",
+  "coverClass": "word-memory-game-cover"
+  },
+  {
+  "title": "Guess The Number",
+  "category": "game",
+  "description": "An interactive game where players try to guess a randomly generated number, with feedback on whether the guess is too high, too low, or correct. Tracks attempts and allows restarting.",
+  "tech": ["HTML", "CSS", "JS"],
+  "link": "./projects/guess-the-number/index.html",
+  "icon": "ri-question-answer-line",
+  "coverClass": "guess-the-number-cover"
+  },
+  {
+  "title": "Hangman Game",
+  "category": "game",
+  "description": "An interactive Hangman game with modern UI. Guess the word before the hangman is fully drawn! Includes restart, win/lose states, and supports long words.",
+  "tech": ["HTML", "CSS", "JS"],
+  "link": "./projects/hangman-game/index.html",
+  "icon": "ri-skull-line",
+  "coverClass": "hangman-game-cover"
+  },
+  {
+  "title": "File Upload Preview",
+  "category": "utility",
+  "description": "Upload images or files and preview them before submission, with size and type validation. Supports multiple files, removal of selected files, and a clean responsive UI.",
+  "tech": ["HTML", "CSS", "JS"],
+  "link": "./projects/file-upload-preview/index.html",
+  "icon": "ri-upload-cloud-line",
+  "coverClass": "file-upload-preview-cover"
+  },
+  {
     "title": "Infinite Runner",
     "category": "action",
     "description": "Procedural neon runner with parallax.",
