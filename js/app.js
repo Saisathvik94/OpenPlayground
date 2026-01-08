@@ -24,34 +24,19 @@ import { ProjectVisibilityEngine } from "./core/projectVisibilityEngine.js";
 // ===============================
 
 // Elements related to theme toggle (light/dark mode)
-const toggleBtn = document.getElementById("toggle-mode-btn");
-const themeIcon = document.getElementById("theme-icon");
-const html = document.documentElement;
-
-// Load previously saved theme from localStorage or default to light theme
-const savedTheme = localStorage.getItem("theme") || "light";
-html.setAttribute("data-theme", savedTheme);
-updateThemeIcon(savedTheme);
-
-// Toggle between light and dark theme when the user clicks the theme button
-toggleBtn.addEventListener("click", () => {
-    const newTheme =
-        html.getAttribute("data-theme") === "light" ? "dark" : "light";
-    html.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-    updateThemeIcon(newTheme);
-
-    // Add shake animation
-    toggleBtn.classList.add("shake");
-    setTimeout(() => toggleBtn.classList.remove("shake"), 500);
-});
+// Theme variables (will be initialized after components load)
+let toggleBtn = null;
+let themeIcon = null;
 
 // Updates the theme icon based on the currently active theme
 function updateThemeIcon(theme) {
-    if (theme === "dark") {
-        themeIcon.className = "ri-moon-fill";
-    } else {
-        themeIcon.className = "ri-sun-line";
+    if (!themeIcon) themeIcon = document.getElementById("theme-icon");
+    if (themeIcon) {
+        if (theme === "dark") {
+            themeIcon.className = "ri-moon-fill";
+        } else {
+            themeIcon.className = "ri-sun-line";
+        }
     }
 }
 
@@ -126,78 +111,41 @@ let allProjectsData = [];
 // Future: category filters, sorting, advanced filters
 let visibilityEngine = null;
 
-const searchInput = document.getElementById("project-search");
-const sortSelect = document.getElementById("project-sort");
-const filterBtns = document.querySelectorAll(".filter-btn");
-const surpriseBtn = document.getElementById("surprise-btn");
-const clearBtn = document.getElementById("clear-filters");
-
-// Reset all filters, search input, and pagination when clear button is clicked
-if (clearBtn) {
-    clearBtn.addEventListener("click", () => {
-        searchInput.value = "";
-        sortSelect.value = "default";
-        currentCategory = "all";
-        currentPage = 1;
-
-        filterBtns.forEach(b => b.classList.remove("active"));
-        document.querySelector('[data-filter="all"]').classList.add("active");
-
-        // Architecture: Clear search query in engine
-        if (visibilityEngine) {
-            visibilityEngine.setSearchQuery("");
-        }
-
-        renderProjects();
-    });
-}
-
-const projectsContainer = document.querySelector(".projects-container");
-const paginationContainer = document.getElementById("pagination-controls");
-
-const allCards = Array.from(document.querySelectorAll(".card"));
+// DOM Elements - will be queried after components load
+let projectsContainer = null;
+let paginationContainer = null;
+let searchInput = null;
+let sortSelect = null;
+let filterBtns = null;
+let surpriseBtn = null;
+let clearBtn = null;
 
 // Updates the project count displayed on category filter buttons
 function updateCategoryCounts() {
-    const counts = {};
+    if (!allProjectsData || allProjectsData.length === 0) return;
 
-    allCards.forEach(card => {
-        const cat = card.dataset.category;
+    const counts = {};
+    allProjectsData.forEach(project => {
+        // Normalize category to lowercase
+        const cat = project.category ? project.category.toLowerCase() : "unknown";
         counts[cat] = (counts[cat] || 0) + 1;
     });
 
+    console.log("📊 Project Counts:", counts);
+
+    if (!filterBtns) filterBtns = document.querySelectorAll(".filter-btn");
+
     filterBtns.forEach(btn => {
-        const cat = btn.dataset.filter;
+        const cat = btn.dataset.filter.toLowerCase();
         if (cat === "all") {
-            btn.innerText = `All (${allCards.length})`;
+            btn.innerText = `All (${allProjectsData.length})`;
         } else {
-            btn.innerText = `${cat.charAt(0).toUpperCase() + cat.slice(1)} (${counts[cat] || 0})`;
+            const count = counts[cat] || 0;
+            const displayCat = cat.charAt(0).toUpperCase() + cat.slice(1);
+            btn.innerText = `${displayCat} (${count})`;
         }
     });
 }
-
-// ===============================
-// Add GitHub link button to cards
-// ===============================
-
-// Dynamically add GitHub repository links to project cards
-allCards.forEach(card => {
-    const githubUrl = card.dataset.github;
-    if (!githubUrl) return;
-
-    const githubBtn = document.createElement("a");
-    githubBtn.href = githubUrl;
-    githubBtn.target = "_blank";
-    githubBtn.rel = "noopener noreferrer";
-    githubBtn.className = "github-link";
-    githubBtn.innerHTML = `<i class="ri-github-fill"></i>`;
-
-    // Prevent card navigation when clicking the GitHub button
-    githubBtn.addEventListener("click", e => e.stopPropagation());
-
-    card.style.position = "relative";
-    card.appendChild(githubBtn);
-});
 
 // Fetch project data from projects.json and initialize project rendering
 async function fetchProjects() {
@@ -212,23 +160,12 @@ async function fetchProjects() {
             projectCount.textContent = `${data.length}+`;
         }
 
-        // ===============================
-        // Architecture: Initialize ProjectVisibilityEngine
-        // ===============================
-        // Extract metadata from project data to initialize the engine
-        // This creates a clean separation between data model and presentation
-        const projectMetadata = data.map(project => ({
-            id: project.title, // Using title as unique identifier
-            title: project.title,
-            category: project.category,
-            description: project.description || ""
-        }));
-
-        visibilityEngine = new ProjectVisibilityEngine(projectMetadata);
+        // Initialize ProjectVisibilityEngine with full data to support rendering
+        visibilityEngine = new ProjectVisibilityEngine(data);
 
         renderProjects();
+        updateCategoryCounts(); // Update counts after data is loaded
     } catch (error) {
-        // Display a fallback message if project data fails to load
         console.error("Error loading projects:", error);
         if (projectsContainer) {
             projectsContainer.innerHTML = `
@@ -241,84 +178,164 @@ async function fetchProjects() {
     }
 }
 
-// ===============================
-// Event Listeners
-// ===============================
+function setupEventListeners() {
+    console.log("🛠️ Setting up event listeners...");
 
-if (searchInput) {
-    // Architecture: Search input now updates the visibility engine
-    // The engine computes which projects should be visible
-    // renderProjects() will read this state and update the DOM accordingly
-    searchInput.addEventListener("input", () => {
-        if (visibilityEngine) {
-            visibilityEngine.setSearchQuery(searchInput.value);
-        }
-        currentPage = 1;
-        renderProjects();
-    });
+    // Query DOM elements now that they are loaded
+    projectsContainer = document.querySelector(".projects-container");
+    paginationContainer = document.getElementById("pagination-controls");
+    searchInput = document.getElementById("project-search");
+    sortSelect = document.getElementById("project-sort");
+    filterBtns = document.querySelectorAll(".filter-btn");
+    surpriseBtn = document.getElementById("surprise-btn");
+    clearBtn = document.getElementById("clear-filters");
+
+    console.log(`Found ${filterBtns.length} filter buttons.`);
+
+    // Search Input
+    if (searchInput) {
+        searchInput.addEventListener("input", () => {
+            if (visibilityEngine) {
+                visibilityEngine.setSearchQuery(searchInput.value);
+            }
+            currentPage = 1;
+            renderProjects();
+        });
+    }
+
+    // Sort Select
+    if (sortSelect) {
+        sortSelect.addEventListener("change", () => {
+            currentSort = sortSelect.value;
+            currentPage = 1;
+            renderProjects();
+        });
+    }
+
+    // Filter Buttons
+    if (filterBtns && filterBtns.length > 0) {
+        filterBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                console.log(`🔘 Filter clicked: ${btn.dataset.filter}`);
+
+                filterBtns.forEach((b) => b.classList.remove("active"));
+                btn.classList.add("active");
+                currentCategory = btn.dataset.filter;
+                if (visibilityEngine) {
+                    visibilityEngine.setCategory(currentCategory);
+                }
+                currentPage = 1;
+                renderProjects();
+            });
+        });
+    } else {
+        console.warn("⚠️ No filter buttons found during setup!");
+    }
+
+    // Surprise Me Button
+    if (surpriseBtn) {
+        surpriseBtn.addEventListener("click", () => {
+            if (allProjectsData.length > 0) {
+                const randomIndex = Math.floor(Math.random() * allProjectsData.length);
+                const randomProject = allProjectsData[randomIndex];
+                // Open project link
+                window.open(randomProject.link, "_self");
+            }
+        });
+    }
+
+    // Clear Filters Button
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            if (sortSelect) sortSelect.value = "default";
+            currentCategory = "all";
+            currentPage = 1;
+
+            if (filterBtns) {
+                filterBtns.forEach(b => b.classList.remove("active"));
+                const allBtn = document.querySelector('[data-filter="all"]');
+                if (allBtn) allBtn.classList.add("active");
+            }
+
+            if (visibilityEngine) {
+                visibilityEngine.reset();
+            }
+
+            renderProjects();
+        });
+    }
+
+    // Theme Toggle Logic
+    toggleBtn = document.getElementById("toggle-mode-btn");
+    themeIcon = document.getElementById("theme-icon");
+    const html = document.documentElement;
+
+    // Load previously saved theme
+    const savedTheme = localStorage.getItem("theme") || "light";
+    html.setAttribute("data-theme", savedTheme);
+    updateThemeIcon(savedTheme);
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+            const newTheme = html.getAttribute("data-theme") === "light" ? "dark" : "light";
+            html.setAttribute("data-theme", newTheme);
+            localStorage.setItem("theme", newTheme);
+            updateThemeIcon(newTheme);
+
+            // Add shake animation
+            toggleBtn.classList.add("shake");
+            setTimeout(() => toggleBtn.classList.remove("shake"), 500);
+        });
+    } else {
+        console.warn("⚠️ Theme toggle button not found during setup!");
+    }
 }
 
-if (sortSelect) {
-    sortSelect.addEventListener("change", () => {
-        currentSort = sortSelect.value;
-        currentPage = 1;
-        renderProjects();
-    });
-}
+// Initialize App
+function initializeApp() {
+    console.log('🚀 Initializing OpenPlayground...');
 
-filterBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        filterBtns.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentCategory = btn.dataset.filter;
-        currentPage = 1;
-        renderProjects();
-    });
-});
+    // 1. Setup Listeners first (binding UI elements)
+    setupEventListeners();
 
-// Surprise Me Button Logic
-if (surpriseBtn) {
-    surpriseBtn.addEventListener("click", () => {
-        if (allProjectsData.length > 0) {
-            const randomIndex = Math.floor(Math.random() * allProjectsData.length);
-            const randomProject = allProjectsData[randomIndex];
-            // Open project link
-            window.open(randomProject.link, "_self");
-        }
-    });
+    // 2. Fetch and render data
+    fetchProjects();
+    fetchContributors();
+
+    console.log('🚀 OpenPlayground app initialized successfully!');
 }
 
 // Render project cards based on search text, category filter, sorting option,
 // and pagination state
 function renderProjects() {
-    if (!projectsContainer) return;
+    console.log("🎨 renderProjects() called - currentCategory:", currentCategory);
+    if (!projectsContainer) {
+        console.warn("❌ projectsContainer is NULL. Attempting dynamic query...");
+        projectsContainer = document.querySelector(".projects-container");
+    }
+
+    if (!projectsContainer) {
+        console.error("⛔ Still no projectsContainer! Check if .projects-container exists in index.html/projects.html");
+        return;
+    }
 
     let filteredProjects = [...allProjectsData];
 
     // ===============================
-    // Architecture: Use ProjectVisibilityEngine for Search Filtering
+    // Architecture: Use ProjectVisibilityEngine for Filtering
     // ===============================
-    // Instead of inline search logic, we delegate to the engine
-    // The engine returns IDs of visible projects based on search query
-    // We then filter our data array to match these IDs
-    // This enables:
-    // 1. Complex search algorithms without cluttering this function
-    // 2. Easy A/B testing of different search strategies
-    // 3. Consistent search behavior across multiple UI components
     if (visibilityEngine) {
-        const visibleProjectIds = visibilityEngine.getVisibleProjects();
-        const visibleIdSet = new Set(visibleProjectIds);
-        filteredProjects = filteredProjects.filter(project =>
-            visibleIdSet.has(project.title)
-        );
-    }
-
-    // Filter projects based on selected category
-    // Note: This will be migrated to the engine in Phase 2
-    if (currentCategory !== "all") {
-        filteredProjects = filteredProjects.filter(
-            (project) => project.category === currentCategory
-        );
+        // The engine handles both search and category filtering
+        filteredProjects = visibilityEngine.getVisibleProjects();
+        console.log(`🔍 Engine Filtered: ${filteredProjects.length} items (Category: ${currentCategory})`);
+    } else {
+        // Fallback if engine is not initialized
+        if (currentCategory !== "all") {
+            filteredProjects = filteredProjects.filter(
+                (p) => (p.category ? p.category.toLowerCase() : "") === currentCategory.toLowerCase()
+            );
+        }
     }
 
     // Sort projects according to the selected sorting option
@@ -417,6 +434,8 @@ function capitalize(str) {
 // ===============================
 
 function renderPagination(totalPages) {
+    // Query container dynamically
+    paginationContainer = document.getElementById("pagination-controls");
     if (!paginationContainer) return;
 
     paginationContainer.innerHTML = "";
@@ -520,25 +539,12 @@ function scrollToProjects() {
 }
 
 // ===============================
-// Init
-// ===============================
-
-updateCategoryCounts();
-
-console.log(
-    "%cWant to contribute? https://github.com/YadavAkhileshh/OpenPlayground",
-    "color:#8b5cf6;font-size:14px"
-);
-
-
-// ===============================
 // Hall of Contributors Logic
 // ===============================
 
-const contributorsGrid = document.getElementById("contributors-grid");
-
 // Fetch GitHub contributors and display them in the contributors section
 async function fetchContributors() {
+    const contributorsGrid = document.getElementById("contributors-grid");
     if (!contributorsGrid) return;
 
     try {
@@ -617,44 +623,25 @@ async function fetchContributors() {
 // Smooth Scroll for Anchor Links
 // ===============================
 
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    // Enable smooth scrolling behavior for internal anchor links
-    anchor.addEventListener("click", function (e) {
-        const targetId = this.getAttribute("href");
-        if (targetId === "#") return;
-
-        const target = document.querySelector(targetId);
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-            });
-        }
-    });
-});
-
 // ===============================
-// Initialize
+// Initialization Logic
 // ===============================
 
 // Wait for all components to be loaded before initializing
-// The components.js dispatches a 'componentLoaded' event when each component is loaded
 let componentsLoaded = 0;
-const totalComponents = 6; // header, hero, projects, contribute, footer, chatbot
+const totalComponents = 6;
 
 document.addEventListener('componentLoaded', (e) => {
     componentsLoaded++;
     console.log(`✅ Component loaded: ${e.detail.component} (${componentsLoaded}/${totalComponents})`);
 
-    // Once all components are loaded, initialize the app
     if (componentsLoaded === totalComponents) {
         console.log('🎉 All components loaded! Initializing app...');
         initializeApp();
     }
 });
 
-// Also add a fallback timeout in case event doesn't fire
+// Fallback timeout
 setTimeout(() => {
     if (componentsLoaded < totalComponents) {
         console.log('⏰ Timeout reached, initializing app anyway...');
@@ -662,65 +649,29 @@ setTimeout(() => {
     }
 }, 3000);
 
-function initializeApp() {
-    // Initialize project data
-    fetchProjects();
-
-    console.log('🚀 OpenPlayground app initialized!');
-}
-
-// Console message
-console.log(
-    "%c🚀 Want to contribute? https://github.com/YadavAkhileshh/OpenPlayground",
-    "color: #6366f1; font-size: 14px; font-weight: bold;"
-);
-
-feat / your - feature
-// ================= CATEGORY FILTERING FOR PROJECTS =================
-document.addEventListener("DOMContentLoaded", () => {
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    const projectCards = document.querySelectorAll(".projects-container .card");
-    const emptyState = document.getElementById("empty-state");
-
-    filterButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            // Active button UI
-            filterButtons.forEach((b) => b.classList.remove("active"));
-            btn.classList.add("active");
-
-            const selectedCategory = btn.dataset.filter;
-            let visibleCount = 0;
-
-            projectCards.forEach((card) => {
-                const cardCategory = card.dataset.category;
-
-                if (
-                    selectedCategory === "all" ||
-                    cardCategory === selectedCategory
-                ) {
-                    card.style.display = "block";
-                    visibleCount++;
-                } else {
-                    card.style.display = "none";
-                }
-            });
-
-            // Empty state handling
-            if (emptyState) {
-                emptyState.style.display = visibleCount === 0 ? "block" : "none";
-            }
-        });
+// Helper for smooth scrolling
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+        const targetId = this.getAttribute("href");
+        if (targetId === "#") return;
+        const target = document.querySelector(targetId);
+        if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
     });
 });
 
-
 // --- 1. Navbar Scroll Logic ---
-const navbar = document.getElementById('navbar');
+let navbar = null;
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+    if (!navbar) navbar = document.getElementById('navbar');
+    if (navbar) {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
     }
 });
 

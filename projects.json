@@ -405,7 +405,7 @@
   },
   {
     "title": "Connect Four",
-    "category": "game",
+    "category": "strategy",
     "description": "Classic Connect Four strategy game.",
     "tech": [
       "HTML",
@@ -588,7 +588,7 @@
   },
   {
     "title": "Memory Game",
-    "category": "game",
+    "category": "puzzle",
     "description": "Test your memory with card matching.",
     "tech": [
       "HTML",
@@ -758,7 +758,7 @@
   },
   {
     "title": "Snake Game",
-    "category": "game",
+    "category": "action",
     "description": "Classic Snake game with AI mode.",
     "tech": [
       "HTML",
@@ -784,7 +784,7 @@
   },
   {
     "title": "Tic Tac Toe",
-    "category": "game",
+    "category": "strategy",
     "description": "Classic 2-player strategy game.",
     "tech": [
       "HTML",
@@ -847,16 +847,19 @@
     "icon": "ri-user-line",
     "coverStyle": "background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); color: #7c2d12;"
   },
- {
-  "title": "Hangman Game",
-  "category": "game",
-  "description": "Guess the hidden word one letter at a time before running out of attempts.",
-  "tech": ["HTML", "CSS", "JS"],
-  "link": "./projects/hangman-game/index.html",
-  "icon": "ri-keyboard-line",
-  "coverClass": "hangman-cover"
-}
-,
+  {
+    "title": "Hangman Game",
+    "category": "game",
+    "description": "Guess the hidden word one letter at a time before running out of attempts.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/hangman-game/index.html",
+    "icon": "ri-keyboard-line",
+    "coverClass": "hangman-cover"
+  },
   {
     "title": "Particle Text",
     "category": "game",
@@ -871,5 +874,4 @@
     "icon": "ri-cursor-line",
     "coverClass": "particle-cover"
   }
-
 ]
