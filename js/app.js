@@ -2,10 +2,10 @@
 // OpenPlayground - Main JavaScript
 // ===============================
 
+// This file controls core UI behavior such as theme switching,
+// project rendering, filtering, sorting, pagination, and contributor display.
+
 // ===============================
-
-// THEME TOGGLE
-
 // Architecture: ProjectVisibilityEngine Integration
 // ===============================
 // We're introducing a centralized visibility engine to handle project filtering logic.
@@ -21,6 +21,7 @@ import { ProjectVisibilityEngine } from "./core/projectVisibilityEngine.js";
 
 // ===============================
 // Theme Toggle
+// ===============================
 
 // Elements related to theme toggle (light/dark mode)
 // Theme variables (will be initialized after components load)
@@ -37,43 +38,49 @@ function updateThemeIcon(theme) {
             themeIcon.className = "ri-sun-line";
         }
     }
-
-    // Listen for input on search box
-    searchInput.addEventListener("input", filterProjects);
-
-    // Optional: if projects are loaded asynchronously, observe changes
-    const observer = new MutationObserver(() => {
-        filterProjects(); // Re-apply filter whenever new cards are added
-    });
-
-    observer.observe(projectsPlaceholder, { childList: true, subtree: true });
-});
-
+}
 
 // ===============================
-// SCROLL TO TOP
+// Scroll to Top
 // ===============================
+
+// Button used to scroll back to the top of the page
 const scrollBtn = document.getElementById("scrollToTopBtn");
+
+// Show or hide the scroll-to-top button based on scroll position
 window.addEventListener("scroll", () => {
     scrollBtn.classList.toggle("show", window.scrollY > 300);
 });
-scrollBtn?.addEventListener("click", () => {
+
+// Smoothly scroll to the top when the button is clicked
+scrollBtn.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 // ===============================
-// MOBILE NAVBAR
+// Mobile Navbar
 // ===============================
+
+// Mobile navigation toggle elements
 const navToggle = document.getElementById("navToggle");
 const navLinks = document.getElementById("navLinks");
 
-if(navToggle && navLinks){
+if (navToggle && navLinks) {
+    // Toggle mobile navigation menu and update menu icon
     navToggle.addEventListener("click", () => {
         navLinks.classList.toggle("active");
+
+        // Toggle icon
         const icon = navToggle.querySelector("i");
-        icon.className = navLinks.classList.contains("active") ? "ri-close-line" : "ri-menu-3-line";
+        if (navLinks.classList.contains("active")) {
+            icon.className = "ri-close-line";
+        } else {
+            icon.className = "ri-menu-3-line";
+        }
     });
-    navLinks.querySelectorAll("a").forEach(link => {
+
+    // Close mobile menu when a navigation link is clicked
+    navLinks.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => {
             navLinks.classList.remove("active");
             navToggle.querySelector("i").className = "ri-menu-3-line";
@@ -82,14 +89,9 @@ if(navToggle && navLinks){
 }
 
 // ===============================
-// PROJECTS SEARCH, FILTER, SORT, PAGINATION
+// Projects Logic
 // ===============================
 
-  const searchInput = document.getElementById("project-search");
-const sortSelect = document.getElementById("project-sort");
-const filterBtns = document.querySelectorAll(".filter-btn");
-
-  
 // Number of project cards displayed per page
 const itemsPerPage = 9;
 // Tracks the current page number for pagination
@@ -148,10 +150,6 @@ function updateCategoryCounts() {
 // Fetch project data from projects.json and initialize project rendering
 async function fetchProjects() {
     try {
-
-        const res = await fetch("./projects.json");
-        allProjectsData = await res.json();
-
         const response = await fetch("./projects.json");
         const data = await response.json();
         allProjectsData = data;
@@ -164,7 +162,6 @@ async function fetchProjects() {
 
         // Initialize ProjectVisibilityEngine with full data to support rendering
         visibilityEngine = new ProjectVisibilityEngine(data);
-
 
         renderProjects();
         updateCategoryCounts(); // Update counts after data is loaded
@@ -355,38 +352,33 @@ function renderProjects() {
             break;
     }
 
+    // Calculate pagination values and slice project list accordingly
+    const totalItems = filteredProjects.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const start = (currentPage - 1) * itemsPerPage;
+    const paginatedItems = filteredProjects.slice(start, start + itemsPerPage);
 
-    switch(currentSort){
-        case "az": filtered.sort((a,b)=>a.title.localeCompare(b.title)); break;
-        case "za": filtered.sort((a,b)=>b.title.localeCompare(a.title)); break;
-        case "newest": filtered.reverse(); break;
-    }
-
-    const totalPages = Math.ceil(filtered.length / itemsPerPage);
-    const start = (currentPage-1)*itemsPerPage;
-    const paginated = filtered.slice(start, start+itemsPerPage);
-
-    // Empty state
-    if(paginated.length===0){
-        emptyState.style.display = "block";
-        projectsContainer.innerHTML = "";
-        paginationContainer.innerHTML = "";
-        return;
-    } else {
-        emptyState.style.display = "none";
-    }
-
-    // Render project cards
+    // Display empty state message if no projects match the criteria
     projectsContainer.innerHTML = "";
-    paginated.forEach(project=>{
+
+    if (paginatedItems.length === 0) {
+        projectsContainer.innerHTML = `
+            <div class="empty-state">
+              <div class = "empty-icon">📂</div>
+                <h3>No projects found! </h3>
+                <p>Try adjusting your search or filter criteria</p>
+            </div>
+        `;
+        renderPagination(0);
+        return;
+    }
+
+    // Render cards with stagger animation
+    paginatedItems.forEach((project, index) => {
         const card = document.createElement("a");
         card.href = project.link;
         card.className = "card";
         card.setAttribute("data-category", project.category);
-
-        card.innerHTML = `
-            <div class="card-cover" style="${project.coverStyle || ''}"><i class="${project.icon}"></i></div>
-
 
         // Cover style
         let coverAttr = "";
@@ -401,48 +393,35 @@ function renderProjects() {
         // Tech stack
         const techStackHtml = project.tech.map((t) => `<span>${t}</span>`).join("");
 
-        // Check if project is bookmarked
-        const isBookmarked = window.bookmarksManager && window.bookmarksManager.isBookmarked(project.title);
-        const bookmarkClass = isBookmarked ? 'bookmarked' : '';
-        const bookmarkIcon = isBookmarked ? 'ri-bookmark-fill' : 'ri-bookmark-line';
-
         card.innerHTML = `
-            <button class="bookmark-btn ${bookmarkClass}" data-project-title="${escapeHtml(project.title)}" aria-label="${isBookmarked ? 'Remove bookmark' : 'Add bookmark'}">
-                <i class="${bookmarkIcon}"></i>
-            </button>
             <div ${coverAttr}><i class="${project.icon}"></i></div>
-
             <div class="card-content">
                 <div class="card-header-flex">
                     <h3 class="card-heading">${project.title}</h3>
-                    <span class="category-tag">${capitalize(project.category)}</span>
+                    <span class="category-tag">${capitalize(
+            project.category
+        )}</span>
                 </div>
                 <p class="card-description">${project.description}</p>
-                <div class="card-tech">${project.tech.map(t=>`<span>${t}</span>`).join('')}</div>
+                <div class="card-tech">${techStackHtml}</div>
             </div>
         `;
-
-
-
-        // Add bookmark button click handler
-        const bookmarkBtn = card.querySelector('.bookmark-btn');
-        bookmarkBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            handleBookmarkClick(bookmarkBtn, project);
-        });
 
         // Stagger animation
         card.style.opacity = "0";
         card.style.transform = "translateY(20px)";
-
         projectsContainer.appendChild(card);
+
+        setTimeout(() => {
+            card.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+            card.style.opacity = "1";
+            card.style.transform = "translateY(0)";
+        }, index * 50);
     });
 
+    // Render pagination controls and handle page navigation
     renderPagination(totalPages);
 }
-
-
 
 // Capitalize the first letter of a given string
 function capitalize(str) {
@@ -450,83 +429,114 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-// Escape HTML to prevent XSS
-function escapeHtml(str) {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
-
-// Handle bookmark button click
-function handleBookmarkClick(btn, project) {
-    if (!window.bookmarksManager) return;
-    
-    const isNowBookmarked = window.bookmarksManager.toggleBookmark(project);
-    const icon = btn.querySelector('i');
-    
-    // Update button state
-    btn.classList.toggle('bookmarked', isNowBookmarked);
-    icon.className = isNowBookmarked ? 'ri-bookmark-fill' : 'ri-bookmark-line';
-    btn.setAttribute('aria-label', isNowBookmarked ? 'Remove bookmark' : 'Add bookmark');
-    
-    // Add animation
-    btn.classList.add('animate');
-    setTimeout(() => btn.classList.remove('animate'), 300);
-    
-    // Show toast notification
-    showBookmarkToast(isNowBookmarked ? 'Added to bookmarks' : 'Removed from bookmarks');
-}
-
-// Show toast notification
-function showBookmarkToast(message) {
-    // Remove existing toast
-    const existingToast = document.querySelector('.bookmark-toast');
-    if (existingToast) existingToast.remove();
-    
-    // Create toast
-    const toast = document.createElement('div');
-    toast.className = 'bookmark-toast';
-    toast.innerHTML = `
-        <i class="ri-bookmark-fill"></i>
-        <span>${message}</span>
-    `;
-    document.body.appendChild(toast);
-    
-    // Show toast
-    setTimeout(() => toast.classList.add('show'), 10);
-    
-    // Hide and remove toast
-    setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 2000);
-}
+// ===============================
+// Pagination
+// ===============================
 
 function renderPagination(totalPages) {
     // Query container dynamically
     paginationContainer = document.getElementById("pagination-controls");
     if (!paginationContainer) return;
 
-// Pagination
-function renderPagination(totalPages){
     paginationContainer.innerHTML = "";
-    if(totalPages <= 1) return;
+    if (totalPages <= 1) return;
 
-    for(let i=1;i<=totalPages;i++){
+    const createBtn = (label, disabled, onClick, isActive = false) => {
         const btn = document.createElement("button");
-        btn.textContent = i;
-        btn.classList.toggle("active", i===currentPage);
-        btn.addEventListener("click", () => {
-            currentPage=i;
+        btn.className = `pagination-btn${isActive ? " active" : ""}`;
+        btn.innerHTML = label;
+        btn.disabled = disabled;
+        btn.onclick = onClick;
+        return btn;
+    };
+
+    // Create previous page navigation button
+    paginationContainer.appendChild(
+        createBtn('<i class="ri-arrow-left-s-line"></i>', currentPage === 1, () => {
+            currentPage--;
             renderProjects();
-            window.scrollTo({top: document.getElementById("projects").offsetTop-80, behavior:"smooth"});
-        });
-        paginationContainer.appendChild(btn);
+            scrollToProjects();
+        })
+    );
+
+    // Page numbers (with ellipsis for many pages)
+    const maxVisible = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+    if (endPage - startPage + 1 < maxVisible) {
+        startPage = Math.max(1, endPage - maxVisible + 1);
     }
+
+    if (startPage > 1) {
+        paginationContainer.appendChild(
+            createBtn("1", false, () => {
+                currentPage = 1;
+                renderProjects();
+                scrollToProjects();
+            })
+        );
+        if (startPage > 2) {
+            const ellipsis = document.createElement("span");
+            ellipsis.className = "pagination-btn";
+            ellipsis.textContent = "...";
+            ellipsis.style.cursor = "default";
+            paginationContainer.appendChild(ellipsis);
+        }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        paginationContainer.appendChild(
+            createBtn(
+                i,
+                false,
+                () => {
+                    currentPage = i;
+                    renderProjects();
+                    scrollToProjects();
+                },
+                i === currentPage
+            )
+        );
+    }
+
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            const ellipsis = document.createElement("span");
+            ellipsis.className = "pagination-btn";
+            ellipsis.textContent = "...";
+            ellipsis.style.cursor = "default";
+            paginationContainer.appendChild(ellipsis);
+        }
+        paginationContainer.appendChild(
+            createBtn(totalPages, false, () => {
+                currentPage = totalPages;
+                renderProjects();
+                scrollToProjects();
+            })
+        );
+    }
+
+    // Create next page navigation button
+    paginationContainer.appendChild(
+        createBtn(
+            '<i class="ri-arrow-right-s-line"></i>',
+            currentPage === totalPages,
+            () => {
+                currentPage++;
+                renderProjects();
+                scrollToProjects();
+            }
+        )
+    );
 }
 
-
-function capitalize(str){ return str.charAt(0).toUpperCase() + str.slice(1); }
+function scrollToProjects() {
+    const projectsSection = document.getElementById("projects");
+    if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+}
 
 // ===============================
 // Hall of Contributors Logic
@@ -538,19 +548,23 @@ async function fetchContributors() {
     if (!contributorsGrid) return;
 
     try {
-        const res = await fetch("https://api.github.com/repos/YadavAkhileshh/OpenPlayground/contributors");
-        const contributors = await res.json();
+        const response = await fetch(
+            "https://api.github.com/repos/YadavAkhileshh/OpenPlayground/contributors"
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch contributors");
+        }
+
+        const contributors = await response.json();
+
+        // Update contributor count in hero
+        const contributorCount = document.getElementById("contributor-count");
+        if (contributorCount) {
+            contributorCount.textContent = `${contributors.length}+`;
+        }
+
         contributorsGrid.innerHTML = "";
-
-        contributors.forEach((c,i)=>{
-            const card = document.createElement("a");
-            card.href = c.html_url;
-            card.target = "_blank";
-            card.className = "contributor-card";
-            card.innerHTML = `
-                <img src="${c.avatar_url}" alt="${c.login}" class="contributor-avatar" loading="lazy">
-                <span class="contributor-name">${c.login}</span>
-
 
         contributors.forEach((contributor, index) => {
             const card = document.createElement("div");
@@ -576,36 +590,42 @@ async function fetchContributors() {
                 <a href="${contributor.html_url}" target="_blank" rel="noopener noreferrer" class="contributor-github-link" aria-label="View ${contributor.login} on GitHub">
                     <i class="ri-github-fill"></i>
                 </a>
-
             `;
+
+            // Stagger animation
+            card.style.opacity = "0";
+            card.style.transform = "translateY(20px)";
             contributorsGrid.appendChild(card);
+
+            setTimeout(() => {
+                card.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0)";
+            }, index * 30);
         });
-    } catch(err){
-        console.error("Failed to fetch contributors:", err);
-        contributorsGrid.innerHTML = `<p>Unable to load contributors.</p>`;
+    } catch (error) {
+        // Show fallback message if contributors cannot be loaded
+        console.error("Error fetching contributors:", error);
+        contributorsGrid.innerHTML = `
+            <div class="loading-msg">
+                Unable to load contributors. 
+                <a href="https://github.com/YadavAkhileshh/OpenPlayground/graphs/contributors" 
+                   target="_blank" 
+                   style="color: var(--primary-500); text-decoration: underline;">
+                   View on GitHub
+                </a>
+            </div>
+        `;
     }
 }
 
 // ===============================
-// SMOOTH SCROLL ANCHORS
+// Smooth Scroll for Anchor Links
 // ===============================
 
 // ===============================
 // Initialization Logic
 // ===============================
-
-const navbar = document.getElementById('navbar');
-window.addEventListener("scroll", ()=>{
-    navbar?.classList.toggle("scrolled", window.scrollY > 50);
-});
-
-// ===============================
-// INITIALIZATION
-// ===============================
-fetchProjects();
-fetchContributors();
-console.log("%c🚀 Contribute at https://github.com/YadavAkhileshh/OpenPlayground", "color:#6366f1;font-size:14px;font-weight:bold;");
-
 
 // Wait for all components to be loaded before initializing
 let componentsLoaded = 0;
@@ -670,4 +690,3 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 });
-

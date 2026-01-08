@@ -12,13 +12,6 @@
     box-sizing: border-box;
 }
 
-/* Highlight for search */
-mark {
-    background-color: #fef3c7;
-    color: #92400e;
-    padding: 0 2px;
-    border-radius: 2px;
-}
 
 /* ===============================
      Chatbot Styles (OpenPlayground Assistant)
@@ -798,31 +791,6 @@ html[data-theme="dark"] .section-badge {
     color: var(--text-muted);
 }
 
-.random-project-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-3) var(--space-5);
-    background: var(--gradient-primary);
-    color: white;
-    border: none;
-    border-radius: var(--radius-lg);
-    font-size: 0.9375rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    margin-top: var(--space-4);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-}
-
-.random-project-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
-}
-
-.random-project-btn:active {
-    transform: translateY(0);
-}
 
 /* ===============================
    Projects Section
@@ -876,23 +844,6 @@ html[data-theme="dark"] .section-badge {
     min-width: 200px;
 }
 
-.search-clear {
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    padding: 0;
-    display: none;
-    transition: color var(--transition-fast);
-}
-
-.search-clear:hover {
-    color: var(--text-primary);
-}
-
-.search-box.has-text .search-clear {
-    display: block;
-}
 
 /* Category Filter */
 .category-filter {
@@ -1428,8 +1379,8 @@ html[data-theme="dark"] .section-badge {
    =============================== */
 #scrollToTopBtn {
     position: fixed;
-    bottom: calc(var(--space-8) + 60px);
-    right: calc(var(--space-8) - 2px);
+    bottom: var(--space-8);
+    right: var(--space-8);
     width: 48px;
     height: 48px;
     border-radius: var(--radius-full);
@@ -1458,10 +1409,10 @@ html[data-theme="dark"] .section-badge {
     box-shadow: var(--shadow-xl), 0 0 30px -5px rgba(99, 102, 241, 0.5);
 }
 
-/* /* ===============================
+/* ===============================
    Footer
    =============================== */
-/* .footer {
+.footer {
     background: var(--surface);
     border-top: 1px solid var(--border-light);
     padding: var(--space-16) var(--space-6);
@@ -1527,7 +1478,7 @@ html[data-theme="dark"] .section-badge {
 .footer-copyright {
     font-size: 0.875rem;
     color: var(--text-muted);
-}  */
+}
 
 /* ===============================
    Responsive Design
