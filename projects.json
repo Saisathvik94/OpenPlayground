@@ -527,6 +527,19 @@
     "coverStyle": "background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #0f766e;"
   },
   {
+    "title": "Pathfinding Visualizer",
+    "category": "utility",
+    "description": "Interactive visualizer for pathfinding algorithms like Dijkstra, A*, BFS, and DFS.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/Pathfinding_Visualizer/index.html",
+    "icon": "ri-direction-line",
+    "coverStyle": "background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #6366f1;"
+  },
+  {
     "title": "Calculator",
     "category": "utility",
     "description": "Basic arithmetic calculator.",
@@ -1220,6 +1233,16 @@
   "link": "./projects/online-food-delivery/index.html",
   "icon": "ri-restaurant-line",
   "coverClass": "online-food-cover"
-}]
+},
+  {
+    "title": "Pathfinding Visualizer",
+    "category": "utility",
+    "description": "Interactive visualizer for pathfinding algorithms like Dijkstra, A*, BFS, and DFS.",
+    "tech": ["HTML", "CSS", "JS"],
+    "link": "./projects/Pathfinding_Visualizer/index.html",
+    "icon": "ri-direction-line",
+    "coverStyle": "background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: #6366f1;"
+  }
+]
 
 
