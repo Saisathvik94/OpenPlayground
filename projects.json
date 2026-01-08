@@ -1362,6 +1362,21 @@
     "link": "./projects/OS-ReadinessChecker/index.html",
     "icon": "ri-direction-line",
     "coverStyle": "background: linear-gradient(135deg, #020617 0%, #22d3ee 100%); color:#ecfeff;"
+  },
+  
+  {
+    "title": "SQL Query Visualizer",
+    "category": "utility",
+    "description": "Interactive visualizer for SQL joins using Set Theory diagrams.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS",
+      "Canvas"
+    ],
+    "link": "./projects/SQL_Query_Visualizer/index.html",
+    "icon": "ri-database-2-line",
+    "coverStyle": "background: linear-gradient(135deg, #1e293b 0%, #334155 100%); color: #3b82f6;"
   }
 ]
 
