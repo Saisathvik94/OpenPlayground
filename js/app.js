@@ -11,6 +11,12 @@ import { ProjectVisibilityEngine } from "./core/projectVisibilityEngine.js";
  */
 class ProjectManager {
     constructor() {
+        // Prevent multiple instances
+        if (window.projectManagerInstance) {
+            console.log("♻️ ProjectManager: Instance already exists, skipping constructor.");
+            return window.projectManagerInstance;
+        }
+
         this.config = {
             ITEMS_PER_PAGE: 12,
             ANIMATION_DELAY: 50
@@ -24,6 +30,7 @@ class ProjectManager {
             initialized: false
         };
 
+        window.projectManagerInstance = this;
         this.init();
     }
 
@@ -181,8 +188,14 @@ class ProjectManager {
         const pageItems = filtered.slice(start, start + this.config.ITEMS_PER_PAGE);
 
         // Visibility
-        if (elements.projectsGrid) elements.projectsGrid.style.display = this.state.viewMode === 'card' ? 'grid' : 'none';
-        if (elements.projectsList) elements.projectsList.style.display = this.state.viewMode === 'list' ? 'flex' : 'none';
+        if (elements.projectsGrid) {
+            elements.projectsGrid.style.display = this.state.viewMode === 'card' ? 'grid' : 'none';
+            if (this.state.viewMode !== 'card') elements.projectsGrid.innerHTML = '';
+        }
+        if (elements.projectsList) {
+            elements.projectsList.style.display = this.state.viewMode === 'list' ? 'flex' : 'none';
+            if (this.state.viewMode !== 'list') elements.projectsList.innerHTML = '';
+        }
 
         if (pageItems.length === 0) {
             if (elements.emptyState) elements.emptyState.style.display = 'block';
