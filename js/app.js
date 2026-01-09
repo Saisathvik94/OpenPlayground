@@ -115,13 +115,16 @@ class ProjectManager {
             });
         }
 
-        // Sort
-        if (elements.sortSelect) {
-            elements.sortSelect.addEventListener('change', (e) => {
-                // Sorting logic handled during render for now
-                this.state.currentPage = 1;
-                this.render();
-            });
+        // Sort alphabetically by title (case-insensitive)
+        state.allProjects.sort((a, b) => {
+            const titleA = (a.title || '').toLowerCase();
+            const titleB = (b.title || '').toLowerCase();
+            return titleA.localeCompare(titleB);
+        });
+
+        // Update project count in hero
+        if (elements.projectCount) {
+            elements.projectCount.textContent = `${state.allProjects.length}+`;
         }
 
         // Category Filters
@@ -421,7 +424,138 @@ function showToast(message) {
     }, 2000);
 }
 
-// Export for window scope
+// ===============================
+// Initialization
+// ===============================
+function initCustomDropdown() {
+    const wrapper = document.querySelector('.custom-select-wrapper');
+    const customSelect = document.querySelector('.custom-select');
+    const trigger = document.querySelector('.custom-select-trigger');
+    const options = document.querySelectorAll('.custom-option');
+    const hiddenSelect = document.getElementById('project-sort');
+
+    if (!wrapper || !trigger || !options.length || !hiddenSelect) return;
+
+    // Toggle dropdown
+    trigger.addEventListener('click', () => {
+        customSelect.classList.toggle('open');
+    });
+
+    // Handle option click
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            const value = option.getAttribute('data-value');
+            const text = option.textContent;
+
+            // Update selected class
+            options.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+
+            // Update trigger text
+            trigger.querySelector('.selected-text').textContent = text;
+
+            // Update hidden select used by app logic
+            hiddenSelect.value = value;
+            // Trigger change event for app logic
+            hiddenSelect.dispatchEvent(new Event('change'));
+
+            // Close dropdown
+            customSelect.classList.remove('open');
+        });
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) {
+            customSelect.classList.remove('open');
+        }
+    });
+
+    // Keyboard support
+    trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            customSelect.classList.toggle('open');
+        }
+    });
+}
+
+function initEventListeners() {
+    // Initialize custom dropdown
+    initCustomDropdown();
+
+    const elements = getElements();
+
+    // Search
+    if (elements.searchInput) {
+        elements.searchInput.addEventListener('input', debounce(handleSearch, 200));
+        console.log('✅ Search listener attached');
+    }
+
+    // Clear search
+    if (elements.searchClear) {
+        elements.searchClear.addEventListener('click', handleClearSearch);
+    }
+
+    // Sort
+    if (elements.sortSelect) {
+        elements.sortSelect.addEventListener('change', handleSort);
+        console.log('✅ Sort listener attached');
+    }
+
+    // Filter buttons
+    if (elements.filterBtns.length > 0) {
+        elements.filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => handleFilter(btn.dataset.filter));
+        });
+        console.log(`✅ ${elements.filterBtns.length} filter buttons attached`);
+    }
+
+    // View more
+    if (elements.viewMoreBtn) {
+        elements.viewMoreBtn.addEventListener('click', handleViewMore);
+        console.log('✅ View more button attached');
+    }
+
+    // View toggle
+    if (elements.cardViewBtn) {
+        elements.cardViewBtn.addEventListener('click', () => handleViewToggle('card'));
+        console.log('✅ Card view button attached');
+    }
+    if (elements.listViewBtn) {
+        elements.listViewBtn.addEventListener('click', () => handleViewToggle('list'));
+        console.log('✅ List view button attached');
+    }
+
+    // Random project
+    if (elements.randomBtn) {
+        elements.randomBtn.addEventListener('click', handleRandomProject);
+    }
+}
+
+function initApp() {
+    if (state.initialized) {
+        console.log('App already initialized');
+        return;
+    }
+
+    console.log('🚀 Initializing OpenPlayground Projects...');
+    initEventListeners();
+    fetchProjects();
+    state.initialized = true;
+}
+
+// ===============================
+// ProjectManager Class (for components.js compatibility)
+// ===============================
+class ProjectManager {
+    constructor() {
+        console.log('ProjectManager initialized');
+        initApp();
+    }
+}
+
+// Expose to global scope
 window.ProjectManager = ProjectManager;
 window.fetchContributors = fetchContributors;
 

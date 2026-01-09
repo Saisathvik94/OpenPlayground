@@ -1,5 +1,253 @@
 [
   {
+    "title": "Daily Coding Planner",
+    "category": "productivity",
+    "description": "Comprehensive planner for developers to organize coding tasks, track progress, and manage learning goals with Pomodoro timer.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS",
+      "Chart.js"
+    ],
+    "link": "./projects/DailyCodingPlanner/index.html",
+    "icon": "ri-code-s-slash-line",
+    "coverClass": "coding-planner-cover"
+  },
+  {
+    "title": "Mindful Breathing Exercise",
+    "category": "wellness",
+    "description": "Interactive breathing exercise interface with guided patterns, visual animations, and session tracking for relaxation and mindfulness.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/breathing-exercise/index.html",
+    "icon": "ri-heart-pulse-line",
+    "coverClass": "breathing-exercise-cover"
+  },
+  {
+    "title": "False Choice Simulator",
+    "category": "psychology",
+    "description": "Psychological experiment simulator demonstrating false choice scenarios and cognitive biases in decision-making.",
+    "tech": [
+        "HTML",
+        "CSS",
+        "JS"
+    ],
+    "link": "./projects/FalseChoiceSimulator/index.html",
+    "icon": "fas fa-brain",
+    "coverClass": "false-choice-cover"
+},
+  {
+    "title": "Traffic Sign Memory Game",
+    "category": "Educational / Memory Game",
+    "description": "Interactive memory game where users match pairs of traffic signs to improve road safety knowledge and memory skills.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/TrafficSignMemory/index.html",
+    "icon": "fa-traffic-light",
+    "coverClass": "traffic-memory-cover"
+  },
+  {
+    "title": "Interactive Road Safety Quiz",
+    "category": "education",
+    "description": "An engaging quiz platform testing knowledge of road safety rules, traffic signs, and safe driving practices with multiple difficulty levels and instant feedback.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/RoadSafetyQuiz/index.html",
+    "icon": "ri-steering-2-line",
+    "coverClass": "safety-quiz-cover"
+  },
+  {
+    "title": "Image Preview Uploader",
+    "category": "utility",
+    "description": "Preview and validate images before upload with drag and drop support.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/image-preview-uploader/index.html",
+    "icon": "ri-image-add-line",
+    "coverClass": "image-preview-cover"
+  },
+  {
+    "title": "Stack vs Queue Visualizer",
+    "category": "utility",
+    "description": "Interactive visualizer to understand Stack (LIFO) and Queue (FIFO) operations with animations and explanations.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/StackvsQueue_Visualizer/index.html",
+    "icon": "ri-stack-line",
+    "coverStyle": "background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%); color: white;"
+  },
+  {
+    "title": "Human Error Playground",
+    "category": "experimental",
+    "description": "An educational interface exploring common UI error patterns through intentionally ambiguous design choices.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/HumanErrorPlayground/index.html",
+    "icon": "ri-flask-line",
+    "coverStyle": "background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%); color:#7c3aed;"
+  },
+  {
+    "title": "Notification Center",
+    "category": "ui",
+    "description": "A modern notification center with filtering, sorting, and bulk actions for managing alerts and system messages.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/NotificationCenter/index.html",
+    "icon": "ri-notification-4-line",
+    "coverStyle": "background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); color:#ffffff;"
+  },
+  {
+    "title": "Human Error Playground",
+    "category": "experimental",
+    "description": "An educational interface exploring common UI error patterns through intentionally ambiguous design choices.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/HumanErrorPlayground/index.html",
+    "icon": "ri-flask-line",
+    "coverStyle": "background: linear-gradient(135deg, #faf5ff 0%, #f5f3ff 100%); color:#7c3aed;"
+  },
+  {
+    "title": "Attention Drift Visualizer",
+    "category": "productivity",
+    "description": "A visualization tool that shows attention patterns based on interaction gaps and tab switches for focus awareness.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/AttentionDriftVisualizer/index.html",
+    "icon": "ri-focus-line",
+    "coverStyle": "background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); color:#5b21b6;"
+  },
+  {
+    "title": "Reality Check Simulator",
+    "category": "productivity",
+    "description": "A time estimation awareness tool that compares predicted vs actual task durations to improve time management skills.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/RealityCheckSimulator/index.html",
+    "icon": "ri-time-line",
+    "coverStyle": "background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); color:#0c4a6e;"
+  },
+  {
+    "title": "Pagination Component",
+    "category": "utility",
+    "description": "A reusable, responsive pagination component for handling large datasets with configurable options.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/PaginationComponent/index.html",
+    "icon": "ri-file-list-3-line",
+    "coverStyle": "background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 100%); color:#1e40af;"
+  },
+  {
+    "title": "Drag and Drop List Manager",
+    "category": "utility",
+    "description": "A drag-and-drop list manager with reordering, priority levels, and local storage persistence.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/DragAndDropList/index.html",
+    "icon": "ri-draggable",
+    "coverStyle": "background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color:#ffffff;"
+  },
+  {
+    "title": "Focus Session Companion",
+    "category": "utility",
+    "description": "Enhance productivity with timed focus sessions and breaks.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/FocusSessionCompanion/index.html",
+    "icon": "ri-booklet-line",
+    "coverStyle": "background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color:#78350f;"
+  },
+  {
+    "title": "Github Profile Finder",
+    "category": "utility",
+    "description": "Find and view GitHub profiles with user details and repositories.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/github-finder/index.html",
+    "icon": "ri-timer-flash-line",
+    "coverStyle": "background: #4f46e5; color: white;"
+  },
+  {
+    "title": "Personal Diary",
+    "category": "utility",
+    "description": "A personal diary app to write, view, search, and manage daily entries with local data persistence.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/PersonalDiary/index.html",
+    "icon": "ri-booklet-line",
+    "coverStyle": "background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color:#78350f;"
+  },
+  {
+    "title": "Notes Taking App",
+    "category": "utility",
+    "description": "A lightweight frontend notes app to create, edit, search, and store notes using LocalStorage.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "link": "./projects/NotesTaking/index.html",
+    "icon": "ri-sticky-note-line",
+    "coverStyle": "background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%); color:#164e63;"
+  },
+  {
+    "title": "Stack vs Queue Visualizer",
+    "category": "utility",
+    "description": "Interactive visualizer to understand Stack (LIFO) and Queue (FIFO) operations with animations and explanations.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/StackvsQueue_Visualizer/index.html",
+    "icon": "ri-stack-line",
+    "coverStyle": "background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%); color: white;"
+  },
+  {
     "title": "AI Resume Analyzer",
     "category": "utility",
     "description": "Analyze and improve your resume with AI.",
