@@ -1329,6 +1329,19 @@
     "coverStyle": "background: linear-gradient(135deg, #7f1d1d 0%, #1f2937 100%); color:#fef2f2;"
   },
   {
+    "title": "Reaction Time Game",
+    "category": "game",
+    "description": "Test and improve your reaction speed with visual cues.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/Reaction-time-game/index.html",
+    "icon": "ri-timer-line",
+    "coverStyle": "background: linear-gradient(135deg, #7f1d1d 0%, #1f2937 100%); color:#fef2f2;"
+  },
+  {
     "title": "Sudoku Solver",
     "category": "utility",
     "description": "Play Sudoku, generate infinite puzzles, or watch the AI solve them.",
