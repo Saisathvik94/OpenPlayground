@@ -172,22 +172,16 @@
   --shadow-glow: 0 0 40px -10px var(--primary-500);
 
   /* Gradients */
-  --gradient-primary: linear-gradient(
-    135deg,
-    var(--primary-500) 0%,
-    var(--accent-500) 100%
-  );
-  --gradient-subtle: linear-gradient(
-    135deg,
-    var(--primary-50) 0%,
-    var(--bg-secondary) 100%
-  );
-  --gradient-hero: linear-gradient(
-    135deg,
-    #667eea 0%,
-    #764ba2 50%,
-    #f093fb 100%
-  );
+  --gradient-primary: linear-gradient(135deg,
+      var(--primary-500) 0%,
+      var(--accent-500) 100%);
+  --gradient-subtle: linear-gradient(135deg,
+      var(--primary-50) 0%,
+      var(--bg-secondary) 100%);
+  --gradient-hero: linear-gradient(135deg,
+      #667eea 0%,
+      #764ba2 50%,
+      #f093fb 100%);
 
   /* Glass Effect */
   --glass-bg: rgba(255, 255, 255, 0.8);
@@ -255,11 +249,9 @@ html[data-theme="dark"] {
     0 8px 10px -6px rgb(0 0 0 / 0.4);
   --shadow-glow: 0 0 60px -10px var(--primary-400);
 
-  --gradient-subtle: linear-gradient(
-    135deg,
-    rgba(99, 102, 241, 0.1) 0%,
-    var(--bg-secondary) 100%
-  );
+  --gradient-subtle: linear-gradient(135deg,
+      rgba(99, 102, 241, 0.1) 0%,
+      var(--bg-secondary) 100%);
 
   --glass-bg: rgba(30, 41, 59, 0.8);
   --glass-border: rgba(71, 85, 105, 0.5);
@@ -355,6 +347,7 @@ html[data-theme="dark"] #toggle-mode-btn i {
 
 /* Shake Animation */
 @keyframes shake {
+
   0%,
   100% {
     transform: rotate(0deg);
@@ -463,7 +456,8 @@ html[data-theme="dark"] #toggle-mode-btn i {
 /* Base style for buttons in card-actions */
 .card-actions .bookmark-btn,
 .card-actions .source-btn {
-  position: static; /* Override absolute if needed */
+  position: static;
+  /* Override absolute if needed */
   width: 36px;
   height: 36px;
   display: flex;
@@ -662,39 +656,27 @@ html[data-theme="dark"] .card-actions .source-btn:hover {
 .hero-gradient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-      ellipse 80% 50% at 50% -20%,
+  background: radial-gradient(ellipse 80% 50% at 50% -20%,
       rgba(99, 102, 241, 0.15) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 60% 40% at 80% 20%,
+      transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 20%,
       rgba(6, 182, 212, 0.1) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse 60% 40% at 20% 80%,
+      transparent 50%),
+    radial-gradient(ellipse 60% 40% at 20% 80%,
       rgba(139, 92, 246, 0.08) 0%,
-      transparent 50%
-    );
+      transparent 50%);
 }
 
 html[data-theme="dark"] .hero-gradient {
-  background: radial-gradient(
-      ellipse 80% 50% at 50% -20%,
+  background: radial-gradient(ellipse 80% 50% at 50% -20%,
       rgba(99, 102, 241, 0.25) 0%,
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 60% 40% at 80% 20%,
+      transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 20%,
       rgba(6, 182, 212, 0.15) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse 60% 40% at 20% 80%,
+      transparent 50%),
+    radial-gradient(ellipse 60% 40% at 20% 80%,
       rgba(139, 92, 246, 0.12) 0%,
-      transparent 50%
-    );
+      transparent 50%);
 }
 
 .hero-grid {
@@ -704,16 +686,12 @@ html[data-theme="dark"] .hero-gradient {
     linear-gradient(90deg, var(--border-light) 1px, transparent 1px);
   background-size: 60px 60px;
   opacity: 0.4;
-  mask-image: radial-gradient(
-    ellipse 80% 60% at 50% 50%,
-    black 20%,
-    transparent 100%
-  );
-  -webkit-mask-image: radial-gradient(
-    ellipse 80% 60% at 50% 50%,
-    black 20%,
-    transparent 100%
-  );
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%,
+      black 20%,
+      transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 50%,
+      black 20%,
+      transparent 100%);
 }
 
 html[data-theme="dark"] .hero-grid {
@@ -906,6 +884,242 @@ html[data-theme="dark"] .hero-badge {
   width: 1px;
   height: 40px;
   background: var(--border-light);
+}
+
+/* ===============================
+   Linkshala Badge Button - Premium Design
+   =============================== */
+.linkshala-badge {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-6);
+  display: flex;
+  justify-content: center;
+}
+
+.linkshala-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 12px 24px;
+  background: linear-gradient(135deg,
+      rgba(99, 102, 241, 0.12) 0%,
+      rgba(139, 92, 246, 0.12) 50%,
+      rgba(6, 182, 212, 0.12) 100%);
+  border: 2px solid transparent;
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+  background-clip: padding-box;
+}
+
+/* Gradient border effect */
+.linkshala-btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg,
+      var(--primary-500) 0%,
+      #8b5cf6 50%,
+      var(--accent-500) 100%);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+/* Inner background */
+.linkshala-btn::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: var(--bg-primary);
+  border-radius: inherit;
+  z-index: -1;
+  transition: background 0.3s ease;
+}
+
+/* Shimmer effect */
+.linkshala-btn .linkshala-pulse {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%);
+  transform: translateX(-100%);
+  animation: linkshala-shimmer 3s infinite;
+  z-index: 0;
+}
+
+@keyframes linkshala-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  50%,
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Sparkle icon */
+.linkshala-sparkle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--primary-500) 0%, #8b5cf6 100%);
+  border-radius: var(--radius-full);
+  color: white;
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 15px -3px rgba(99, 102, 241, 0.5);
+}
+
+.linkshala-sparkle i {
+  animation: sparkle-rotate 4s linear infinite;
+}
+
+@keyframes sparkle-rotate {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  25% {
+    transform: rotate(10deg) scale(1.1);
+  }
+
+  50% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  75% {
+    transform: rotate(-10deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* Text styling */
+.linkshala-text {
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.01em;
+}
+
+.linkshala-text strong {
+  background: linear-gradient(135deg, var(--primary-500) 0%, #8b5cf6 50%, var(--accent-500) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  font-size: 1.05em;
+  background-size: 200% 200%;
+  animation: gradient-flow 3s ease infinite;
+}
+
+@keyframes gradient-flow {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Arrow icon */
+.linkshala-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 1rem;
+  color: var(--primary-500);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: var(--radius-full);
+}
+
+/* Hover states */
+.linkshala-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow:
+    0 20px 40px -15px rgba(99, 102, 241, 0.4),
+    0 0 0 1px rgba(99, 102, 241, 0.1);
+}
+
+.linkshala-btn:hover::before {
+  opacity: 1;
+}
+
+.linkshala-btn:hover .linkshala-sparkle {
+  transform: scale(1.15) rotate(15deg);
+  box-shadow: 0 6px 20px -3px rgba(99, 102, 241, 0.6);
+}
+
+.linkshala-btn:hover .linkshala-arrow {
+  transform: translateX(3px);
+  background: var(--primary-500);
+  color: white;
+}
+
+/* Active state */
+.linkshala-btn:active {
+  transform: translateY(-2px) scale(1);
+}
+
+/* Dark mode adjustments */
+html[data-theme="dark"] .linkshala-btn {
+  background: linear-gradient(135deg,
+      rgba(99, 102, 241, 0.15) 0%,
+      rgba(139, 92, 246, 0.15) 50%,
+      rgba(6, 182, 212, 0.15) 100%);
+}
+
+html[data-theme="dark"] .linkshala-btn::after {
+  background: var(--bg-secondary);
+}
+
+html[data-theme="dark"] .linkshala-btn:hover {
+  box-shadow:
+    0 20px 50px -15px rgba(99, 102, 241, 0.5),
+    0 0 30px -5px rgba(139, 92, 246, 0.3);
+}
+
+html[data-theme="dark"] .linkshala-btn .linkshala-pulse {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 50%,
+      transparent 100%);
+}
+
+html[data-theme="dark"] .linkshala-text strong {
+  -webkit-text-fill-color: transparent;
+}
+
+html[data-theme="dark"] .linkshala-arrow {
+  background: rgba(99, 102, 241, 0.2);
+}
+
+/* Animation delay for linkshala badge */
+.fade-up.delay-350 {
+  animation-delay: 350ms;
 }
 
 /* ===============================
@@ -1321,11 +1535,9 @@ html[data-theme="dark"] .section-badge {
   transform: translate(-50%, -50%);
   width: 600px;
   height: 600px;
-  background: radial-gradient(
-    circle,
-    rgba(99, 102, 241, 0.1) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(99, 102, 241, 0.1) 0%,
+      transparent 70%);
   pointer-events: none;
 }
 
@@ -1503,12 +1715,10 @@ html[data-theme="dark"] .section-badge {
   width: 72px;
   height: 72px;
   border-radius: var(--radius-full);
-  background: linear-gradient(
-    90deg,
-    var(--bg-tertiary) 25%,
-    var(--bg-secondary) 50%,
-    var(--bg-tertiary) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--bg-tertiary) 25%,
+      var(--bg-secondary) 50%,
+      var(--bg-tertiary) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -1517,12 +1727,10 @@ html[data-theme="dark"] .section-badge {
   width: 100px;
   height: 16px;
   border-radius: var(--radius-sm);
-  background: linear-gradient(
-    90deg,
-    var(--bg-tertiary) 25%,
-    var(--bg-secondary) 50%,
-    var(--bg-tertiary) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--bg-tertiary) 25%,
+      var(--bg-secondary) 50%,
+      var(--bg-tertiary) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -1598,7 +1806,8 @@ html[data-theme="dark"] .section-badge {
   transition: stroke-dashoffset 0.1s;
   transform-origin: 50% 50%;
   stroke-dasharray: 132;
-  stroke-dashoffset: 132; /* Initial value */
+  stroke-dashoffset: 132;
+  /* Initial value */
 }
 
 /* ===============================
@@ -1958,12 +2167,10 @@ html[data-theme="dark"] .section-badge {
   margin: var(--space-8) auto;
   width: 60px;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--primary-500),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      var(--primary-500),
+      transparent);
 }
 
 /* Bottom */
@@ -2001,6 +2208,7 @@ html[data-theme="dark"] .section-badge {
 }
 
 @keyframes pulse-heart {
+
   0%,
   100% {
     transform: scale(1);
@@ -2254,12 +2462,10 @@ html[data-theme="dark"] .team-role {
 }
 
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bg-secondary) 25%,
-    var(--border-light) 50%,
-    var(--bg-secondary) 75%
-  );
+  background: linear-gradient(90deg,
+      var(--bg-secondary) 25%,
+      var(--border-light) 50%,
+      var(--bg-secondary) 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s infinite;
   border-radius: var(--radius-sm);
@@ -2557,6 +2763,7 @@ html[data-theme="dark"] .team-role {
 .list-card-btn.bookmarked:hover {
   background: var(--primary-500);
 }
+
 .list-card-btn.bookmarked:hover i {
   color: white;
 }
