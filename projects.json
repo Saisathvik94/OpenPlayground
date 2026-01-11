@@ -1200,6 +1200,20 @@
     "icon": "ri-keyboard-line",
     "coverStyle": "background: linear-gradient(135deg, #fa6896 0%, #ff3e98 100%); color: white;"
   },
+
+   {
+    "title": "Dumb Charades",
+    "category": "game",
+    "description": "Act out random words or phrases without speaking while others guess.",
+    "tech": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "link": "./projects/Dumb Charades/index.html",
+    "icon": "ri-keyboard-line",
+    "coverClass": "hangman-cover"
+  },
   {
     "title": "Particle Text",
     "category": "game",
