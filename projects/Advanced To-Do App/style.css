@@ -227,17 +227,25 @@ button {
   background: rgba(0, 0, 0, 0.45);
 }
 
+
 .modal-content {
   position: relative;
   background: var(--surface);
+  border: 2px solid rgba(252, 252, 252, 0.785);
   width: min(95%, 520px);
   margin: auto;
   top: 50%;
   transform: translateY(-50%);
   border-radius: var(--radius);
   padding: 1.25rem;
+  box-shadow: 0 8px 25px rgb(240, 237, 237);  
 }
 
+.modal-content input::placeholder,
+.modal-content textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 1;
+}
 .modal-header,
 .modal-footer {
   display: flex;
