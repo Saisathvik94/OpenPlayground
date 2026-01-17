@@ -14,6 +14,34 @@
     "coverStyle": "background: linear-gradient(135deg, #0a0a0f 0%, #151520 50%, #1e1e2d 100%); color: #00ff41;"
   },
   {
+  "title": "Network Protocol Simulator",
+  "category": "systems",
+  "difficulty": "Advanced",
+  "description": "An interactive simulator that visualizes how network protocols like TCP, UDP, HTTP, and DNS work by animating packet flow, handshakes, delays, and errors in real time.",
+  "tech": [
+    "HTML5",
+    "CSS3",
+    "JavaScript"
+  ],
+  "link": "./projects/NetworkProtocolSimulator/index.html",
+  "icon": "ri-router-line",
+  "coverStyle": "background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); color: #00e5ff;"
+},
+  {
+  "title": "Interactive Regex Tester",
+  "category": "developer-tools",
+  "difficulty": "Beginner",
+  "description": "A real-time regular expression testing tool that highlights matches, explains patterns, and provides instant feedback for validating and debugging regex expressions.",
+  "tech": [
+    "HTML5",
+    "CSS3",
+    "JavaScript"
+  ],
+  "link": "./projects/RegexTester/index.html",
+  "icon": "ri-code-line",
+  "coverStyle": "background: linear-gradient(135deg, #1f1c2c 0%, #2a0845 100%); color: #ffcc70;"
+},
+  {
     "title": "SubTrack - Subscription Finance Dashboard",
     "category": "finance",
     "difficulty": "Intermediate",
