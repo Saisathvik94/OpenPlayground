@@ -2497,5 +2497,19 @@
     "link": "./projects/roadmap-generator/index.html",
     "icon": "ri-roadmap-line",
     "coverStyle": "background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;"
+  },
+  {
+  "title": "Luxury To-Do List",
+  "category": "utility",
+  "difficulty": "Beginner",
+  "description": "A minimal yet luxurious to-do list application with glassmorphism UI, dark/light mode, and persistent task storage using localStorage.",
+  "tech": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "link": "./projects/todo-list/index.html",
+  "icon": "ri-task-line",
+  "coverStyle": "background: linear-gradient(135deg, #141e30 0%, #243b55 100%); color: white;"
   }
 ]
