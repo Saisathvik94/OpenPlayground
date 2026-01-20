@@ -59,6 +59,11 @@
       "link": "./projects/AI-ChatBot/index.html"
     },
     {
+      "folder": "SignDocs",
+      "path": "./projects/SignDocs/project.json",
+      "link": "./projects/SignDocs/index.html"
+    },
+    {
       "folder": "Alarm-app",
       "path": "./projects/Alarm-app/project.json",
       "link": "./projects/Alarm-app/index.html"
