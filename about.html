@@ -15,7 +15,15 @@
 </head>
 
 <body>
+  <!-- Apply saved theme immediately to prevent flash -->
+  <script>
+    (function () {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    })();
+  </script>
   <!-- Header -->
+
   <nav class="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo">
@@ -168,7 +176,7 @@
         Our <span class="gradient-text">Mentors</span>
       </h2>
       <p class="section-subtitle">
-         Developers who guide, support, and inspire our contributors
+        Developers who guide, support, and inspire our contributors
       </p>
     </div>
 

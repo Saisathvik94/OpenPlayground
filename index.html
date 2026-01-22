@@ -24,7 +24,15 @@
 </head>
 
 <body>
+    <!-- Apply saved theme immediately to prevent flash -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
     <div id="header-placeholder"></div>
+
 
     <div id="hero-placeholder"></div>
 

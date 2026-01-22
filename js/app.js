@@ -3,7 +3,7 @@
 // ===============================
 
 import { ProjectVisibilityEngine } from "./core/projectVisibilityEngine.js";
-import {keyevents} from "./core/Shortcut.js"
+import { keyevents } from "./core/Shortcut.js"
 
 class ProjectManager {
     constructor() {
@@ -215,10 +215,10 @@ class ProjectManager {
 
     openRandomProject() {
         if (this.state.allProjects.length === 0) return;
-        
+
         const randomIndex = Math.floor(Math.random() * this.state.allProjects.length);
         const randomProject = this.state.allProjects[randomIndex];
-        
+
         // Navigate to the project
         window.location.href = randomProject.link;
     }
@@ -479,30 +479,51 @@ function showToast(message) {
 window.ProjectManager = ProjectManager;
 window.fetchContributors = fetchContributors;
 
+// Initialize ProjectManager - handles both immediate and event-based loading
+function initProjectManager() {
+    if (window.projectManagerInstance?.state.initialized) return;
+
+    const projectsGrid = document.getElementById('projects-grid');
+    if (projectsGrid) {
+        console.log('📋 Projects component found, initializing...');
+        const manager = new ProjectManager();
+        manager.init();
+    }
+}
+
 // Listen for component load events from components.js
 document.addEventListener('componentLoaded', (e) => {
     if (e.detail && e.detail.component === 'projects') {
-        const manager = new ProjectManager();
-        manager.init();
+        initProjectManager();
     }
     if (e.detail && e.detail.component === 'contributors') {
         fetchContributors();
     }
 });
 
-// Fade-in animation observer
-document.addEventListener('DOMContentLoaded', () => {
+// Also check immediately in case components already loaded (module timing issue)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        keyevents();
+        setTimeout(initProjectManager, 100); // Small delay to ensure components are ready
+    });
+} else {
+    // DOM already loaded
     keyevents();
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
+    setTimeout(initProjectManager, 100);
+}
 
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-});
+// Fade-in animation observer
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
 console.log('%c🚀 OpenPlayground Unified Logic Active', 'color:#6366f1;font-weight:bold;');
+

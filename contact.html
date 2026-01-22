@@ -192,7 +192,15 @@
 </head>
 
 <body>
+    <!-- Apply saved theme immediately to prevent flash -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
     <div id="header-placeholder"></div>
+
 
     <!-- Contact Hero -->
     <section class="hero-section" style="padding: 4rem 1.5rem 2rem;">

@@ -20,11 +20,19 @@
     <link rel="stylesheet" href="./css/responsive.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/bookmarks.css">
-      <link rel="stylesheet" href="./css/footer.css">
+    <link rel="stylesheet" href="./css/footer.css">
 </head>
 
 <body>
+    <!-- Apply saved theme immediately to prevent flash -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
     <!-- NAVBAR -->
+
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#" class="nav-logo">

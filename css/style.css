@@ -419,6 +419,11 @@ button#themeToggle {
   transition: all var(--transition-slow);
 }
 
+/* Reserve space for sticky navbar */
+#header-placeholder {
+  height: 72px; /* matches navbar height */
+}
+
 .nav-container {
   max-width: 1280px;
   margin: 0 auto;
@@ -2813,6 +2818,117 @@ html[data-theme="dark"] .team-role {
 .star.selected,
 .star:hover {
   color: #ffc107;
+}
+
+/* Rating Modal Tabs */
+.rating-modal-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-light);
+  background: var(--bg-secondary);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all var(--transition-fast);
+  border-bottom: 3px solid transparent;
+}
+
+.tab-btn.active {
+  color: var(--primary-500);
+  border-bottom-color: var(--primary-500);
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+/* Tab Content */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Current Rating Display */
+.current-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
+
+.rating-label {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.rating-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-500);
+}
+
+/* Reviews List */
+.reviews-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.no-reviews {
+  text-align: center;
+  padding: var(--space-4);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.review-item {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--border-light);
+  animation: fadeInCard 0.3s ease-out;
+}
+
+.review-item:last-child {
+  border-bottom: none;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.review-stars {
+  display: flex;
+  gap: 2px;
+}
+
+.review-stars i {
+  font-size: 0.85rem;
+  color: #ffc107;
+}
+
+.review-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.review-text {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .review-textarea {
